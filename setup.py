@@ -18,7 +18,7 @@ setuptools.setup(
 	packages=setuptools.find_packages(),
 	classifiers=[
 		"Programming Language :: Python :: 3.8",
-		"License :: OSI Approved :: GNU Lesser General Public License v2.1 only (LGPL-2.1-only)",
+		"License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)",
 		"Operating System :: OS Independent",
 	],
 	install_requires=[
