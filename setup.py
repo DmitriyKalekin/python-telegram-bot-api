@@ -7,14 +7,14 @@ with open("README.md", "r") as fh:
 requirements = ["aiohttp>=3.6.2"]
 
 setuptools.setup(
-	name="telegram-bot-api",
+	name="python-telegram-bot-api",
 	version="0.0.1",
 	author="Dmitriy Kalekin",
 	author_email="herrhorror@gmail.com",
 	description="Simple and fast client to call rest-api endpoints `api.telegram.org` using `aiohttp` package.",
 	long_description=long_description,
 	long_description_content_type="text/markdown",
-	url="https://github.com/DmitriyKalekin/telegram-bot-api",
+	url="https://github.com/DmitriyKalekin/python-telegram-bot-api",
 	packages=setuptools.find_packages(),
 	classifiers=[
 		"Programming Language :: Python :: 3.8",
