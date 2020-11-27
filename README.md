@@ -1,7 +1,10 @@
 # Telegram Bot API - Python SDK (using aiohttp)
 
 <p align="center">
-<a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/telegram-%40herr__horror-blue" alt="Author's Telegram Chat"/></a>
+<img src="https://img.shields.io/badge/tests-pytest-orange" alt="pytest"/>
+<img src="https://img.shields.io/badge/async-asyncio,aiohttp-green" alt="asyncio, aiohttp"/>
+<a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/Chat-on%20Telegram-2CA5E0.svg?logo=telegram&style=for-the-badge" alt="Chat on Telegram"/></a>
+
 </p>
 
 
