@@ -11,12 +11,12 @@
 Simple and fast client to call rest-api endpoints `api.telegram.org` using aiohttp package.  
 
 View at:
-`https://test.pypi.org/project/telegram-bot-api`
+`https://test.pypi.org/project/python-telegram-bot-api`
 
 
 ## How to install
 ```bash
-pip3 install telegram-bot-api
+pip3 install python-telegram-bot-api
 ```
 
 
@@ -66,10 +66,10 @@ See License section for more details.
 This project is released under the [GNU LESSER GENERAL PUBLIC LICENSE][link-license] License.
 
 [link-author]: https://github.com/DmitriyKalekin
-[link-repo]: https://github.com/DmitriyKalekin/telegram-bot-api
-[link-issues]: https://github.com/DmitriyKalekin/telegram-bot-api/issues
-[link-contributors]: https://github.com/DmitriyKalekin/telegram-bot-api/contributors
+[link-repo]: https://github.com/DmitriyKalekin/python-telegram-bot-api
+[link-issues]: https://github.com/DmitriyKalekin/python-telegram-bot-api/issues
+[link-contributors]: https://github.com/DmitriyKalekin/python-telegram-bot-api/contributors
 [link-docs]: https://telegram-bot-api.readme.io/docs
-[link-license]: https://github.com/DmitriyKalekin/telegram-bot-api/blob/main/LICENSE
+[link-license]: https://github.com/DmitriyKalekin/python-telegram-bot-api/blob/main/LICENSE
 [link-telegram-bot-api]: https://core.telegram.org/bots
 [link-awesome-telegram-bots]: https://github.com/telegram-bot-sdk/awesome-telegram-bots
