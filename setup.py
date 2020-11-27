@@ -8,7 +8,7 @@ requirements = ["aiohttp>=3.6.2"]
 
 setuptools.setup(
 	name="python-telegram-bot-api",
-	version="0.0.1",
+	version="0.0.2",
 	author="Dmitriy Kalekin",
 	author_email="herrhorror@gmail.com",
 	description="Simple and fast client to call rest-api endpoints `api.telegram.org` using `aiohttp` package.",
