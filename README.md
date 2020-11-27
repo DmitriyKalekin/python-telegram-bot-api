@@ -11,7 +11,7 @@
 Simple and fast client to call rest-api endpoints `api.telegram.org` using aiohttp package.  
 
 View at:
-https://test.pypi.org/project/telegram-bot-api
+`https://test.pypi.org/project/telegram-bot-api`
 
 
 ## How to install
