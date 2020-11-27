@@ -23,7 +23,7 @@ pip3 install python-telegram-bot-api
 ## Usage
 ```python
 import asyncio
-from python_telegram_bot_api import TgBotJson
+from api_tgbot import TgBotJson
 
 
 TGBOT_TOKEN = "12345:YOUR_TOKEN"
