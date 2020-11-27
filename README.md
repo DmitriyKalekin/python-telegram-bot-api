@@ -3,7 +3,7 @@
 <p align="center">
 <img src="https://img.shields.io/badge/tests-pytest-orange?style=for-the-badge" alt="pytest"/>
 <img src="https://img.shields.io/badge/async-asyncio, aiohttp-green?style=for-the-badge" alt="asyncio, aiohttp"/>
-<a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/Chat-on%20Telegram-2CA5E0.svg?logo=telegram&style=for-the-badge" alt="Chat on Telegram"/></a>
+<a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/Telegram Chat-@herr_horror-2CA5E0.svg?logo=telegram&style=for-the-badge" alt="Chat on Telegram"/></a>
 
 </p>
 
