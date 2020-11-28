@@ -1,1 +1,2 @@
 aiohttp>=3.6.2
+pygramtic==0.2.0

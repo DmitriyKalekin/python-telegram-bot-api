@@ -2,6 +2,7 @@
 __pycache__/
 .idea/
 .pytest_cache/
+build-package.sh
 *.py[cod]
 *$py.class
 
