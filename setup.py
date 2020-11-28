@@ -13,8 +13,6 @@ with open('requirements.txt') as f:
 with open(path.join(here, 'VERSION')) as f:
     version = f.read().strip()
 
-requirements = ["aiohttp>=3.6.2", "pygramtic>=0.2.0"]
-
 setup(
     name="python-telegram-bot-api",
     version=version,

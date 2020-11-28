@@ -3,6 +3,7 @@ __pycache__/
 .idea/
 .pytest_cache/
 build-package.sh
+__trash/
 *.py[cod]
 *$py.class
 
