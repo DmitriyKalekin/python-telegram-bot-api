@@ -1,10 +1,15 @@
 from aiohttp import ClientSession, ClientResponse
+import logging
+
+# class Response:
+#     status: int = None
+#     json
 
 class TgBotJson:
-    def __init__(self, token: str = None):
+    def __init__(self, token: str):
         assert token and token != ""
         self.token = token
-        self.url = "https://api.telegram.org/bot" + token + "/"
+        self.url = f"https://api.telegram.org/bot{token}/"
 
     def __repr__(self):
         return self.url   # pragma: no cover
@@ -81,10 +86,12 @@ class TgBotJson:
         async with ClientSession(headers={"Accept": "application/json"}) as c:
             return await c.get(url)
 
+
     async def getWebhookInfo(self) -> ClientResponse:
         url = self.url + "getWebhookInfo"
         async with ClientSession(headers={"Accept": "application/json"}) as c:
             return await c.get(url)
+
 
     async def deleteWebhook(self) -> ClientResponse:
         url = self.url + "deleteWebhook"

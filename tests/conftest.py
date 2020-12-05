@@ -1,7 +1,7 @@
 import asyncio
 import pytest
 from aioresponses import aioresponses
-from py3tgbot import TgBotJson
+from api_tgbot import TgBotJson, TgBot
 
 
 @pytest.fixture(scope="module")
@@ -17,6 +17,11 @@ def mock_aioresponse():
 
 
 @pytest.fixture(scope="module")
-def client_tgbot():
+def client_tgbot_json():
     client = TgBotJson(token="12345:TG_BOT_TOKEN")
+    yield client
+
+@pytest.fixture(scope="module")
+def client_tgbot_pydantic():
+    client = TgBot(token="12345:TG_BOT_TOKEN")
     yield client
