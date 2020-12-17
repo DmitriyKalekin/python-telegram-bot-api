@@ -42,27 +42,35 @@ async def test_deleteWebhook(client_tgbot_pydantic, mock_aioresponse):
             {'ok': False, 'error_code': 400,
              'description': 'Bad Request: bad webhook: Failed to resolve host: No address associated with hostname'},
         ],
+    ]
+)
+@pytest.mark.asyncio
+async def test_setWebhook_exceptions(client_tgbot_pydantic, mock_aioresponse, error, wh_url, json_response):
+    mock_aioresponse.get(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/setWebhook?url=" + str(wh_url), payload=json_response)
+    with pytest.raises(error) as e:
+        response = await client_tgbot_pydantic.setWebhook(wh_url)
+    assert type(e.value) == error
+    assert str(e.value) == json_response["description"]
+    # assert getattr(e, 'message', repr(e))
+
+
+@pytest.mark.parametrize(
+    "wh_url, json_response", [
         [
-            None,
             "https://ffe88ca28f0c.ngrok.io/tg/wh",
             {'ok': True, 'result': True, 'description': 'Webhook was set'},
         ],
         [
-            None,
             "https://ffe88ca28f0c.ngrok.io/tg/wh",
             {'ok': True, 'result': True, 'description': 'Webhook is already set'},
         ]
     ]
 )
 @pytest.mark.asyncio
-async def test_setWebhook(client_tgbot_pydantic, mock_aioresponse, error, wh_url, json_response):
+async def test_setWebhook(client_tgbot_pydantic, mock_aioresponse, wh_url, json_response):
     mock_aioresponse.get(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/setWebhook?url=" + str(wh_url), payload=json_response)
-    if error:
-        with pytest.raises(error):
-            response = await client_tgbot_pydantic.setWebhook(wh_url)
-        return
-    else:
-        response = await client_tgbot_pydantic.setWebhook(wh_url)
+
+    response = await client_tgbot_pydantic.setWebhook(wh_url)
 
     assert type(response) == bool
     assert response == json_response["result"]
@@ -96,12 +104,26 @@ async def test_getWebhhokInfo(client_tgbot_pydantic, mock_aioresponse, wh_url, j
     assert response == WebhookInfo.parse_obj(json_wh_status["result"])
 
 
+
 @pytest.mark.parametrize(
-    "error, json_updates", [
+    "error, json_response", [
         [TgException, {'ok': False, 'error_code': 409,
                'description': "Conflict: can't use getUpdates method while webhook is active; use deleteWebhook to delete the webhook first"}],
-        [None, {'ok': True, 'result': []}],
-        [None, {'ok': True, 'result': [{'update_id': 12210570, 'message': {'message_id': 785,
+    ]
+)
+@pytest.mark.asyncio
+async def test_getUpdates_exceptions(client_tgbot_pydantic, mock_aioresponse, error, json_response):
+    mock_aioresponse.get(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/getUpdates", payload=json_response)
+
+    with pytest.raises(error) as e:
+        response = await client_tgbot_pydantic.getUpdates()
+    assert type(e.value) == error
+    assert str(e.value) == json_response["description"]
+
+@pytest.mark.parametrize(
+    "json_updates", [
+        {'ok': True, 'result': []},
+        {'ok': True, 'result': [{'update_id': 12210570, 'message': {'message_id': 785,
                                                                           'from': {'id': 435627225, 'is_bot': False,
                                                                                    'first_name': 'Дмитрий',
                                                                                    'last_name': 'Калекин',
@@ -112,22 +134,15 @@ async def test_getWebhhokInfo(client_tgbot_pydantic, mock_aioresponse, wh_url, j
                                                                                    'last_name': 'Калекин',
                                                                                    'username': 'herr_horror',
                                                                                    'type': 'private'},
-                                                                          'date': 1605745560, 'text': 'привет'}}]}],
+                                                                          'date': 1605745560, 'text': 'привет'}}]},
     ]
 )
 @pytest.mark.asyncio
-async def test_getUpdates(client_tgbot_pydantic, mock_aioresponse, error, json_updates):
+async def test_getUpdates(client_tgbot_pydantic, mock_aioresponse, json_updates):
     mock_aioresponse.get(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/getUpdates", payload=json_updates)
 
-    # TODO: ASK
-    if error:
-        with pytest.raises(error):
-            response = await client_tgbot_pydantic.getUpdates()
-        return
-    else:
-        response = await client_tgbot_pydantic.getUpdates()
+    response = await client_tgbot_pydantic.getUpdates()
 
-    # TODO: ASK
     assert type(response) == list
     assert response == [Update.parse_obj(obj) for obj in json_updates["result"]]
 
@@ -162,38 +177,40 @@ async def test_sendMessage(client_tgbot_pydantic, mock_aioresponse, error_code, 
     assert response2 == Message.parse_obj(json_response["result"])
 
 
+
 @pytest.mark.parametrize(
     "error, msg_id, json_response", [
         [TgException, 99999, {'ok': False, 'error_code': 400, 'description': 'Bad Request: message to delete not found'}],
-        [None, 785, {'ok': True, 'result': True}],
     ])
 @pytest.mark.asyncio
-async def test_deleteMessage(client_tgbot_pydantic, mock_aioresponse, error, msg_id, json_response):
+async def test_deleteMessage_exception(client_tgbot_pydantic, mock_aioresponse, error, msg_id, json_response):
     mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/deleteMessage", payload=json_response)
 
-
-    if error:
-        with pytest.raises(error):
-            response = await client_tgbot_pydantic.deleteMessage(435627225, msg_id)
-        return
-    else:
+    with pytest.raises(error) as e:
         response = await client_tgbot_pydantic.deleteMessage(435627225, msg_id)
+    assert type(e.value) == error
+    assert str(e.value) == json_response["description"]
 
+
+@pytest.mark.parametrize(
+    "msg_id, json_response", [
+        [785, {'ok': True, 'result': True}],
+    ])
+@pytest.mark.asyncio
+async def test_deleteMessage(client_tgbot_pydantic, mock_aioresponse, msg_id, json_response):
+    mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/deleteMessage", payload=json_response)
+
+    response = await client_tgbot_pydantic.deleteMessage(435627225, msg_id)
 
     assert type(response) == bool
     assert response == json_response["result"]
 
-
-
-
 @pytest.mark.parametrize(
     "error, msg_id, txt, json_response", [
         [TgException, 99999, "new.txt", {'ok': False, 'error_code': 400, 'description': 'Bad Request: message to edit not found'}],
-        [None, 786, "new_text", {'ok': True, 'result': {'message_id': 786, 'from': {'id': 1357535845, 'is_bot': True, 'first_name': 'support-bot', 'username': 'AmoSupportBot'}, 'chat': {'id': 435627225, 'first_name': 'Дмитрий', 'last_name': 'Калекин', 'username': 'herr_horror', 'type': 'private'}, 'date': 1605747017, 'edit_date': 1605782835, 'text': 'new_text'}}],
-        [None, 786, "new.text", {'ok': True, 'result': {'message_id': 786, 'from': {'id': 1357535845, 'is_bot': True, 'first_name': 'support-bot', 'username': 'AmoSupportBot'}, 'chat': {'id': 435627225, 'first_name': 'Дмитрий', 'last_name': 'Калекин', 'username': 'herr_horror', 'type': 'private'}, 'date': 1605747017, 'edit_date': 1605782836, 'text': 'new.text'}}],
     ])
 @pytest.mark.asyncio
-async def test_editMessageText(client_tgbot_pydantic, mock_aioresponse, error, msg_id, txt, json_response):
+async def test_editMessageText_exceptions(client_tgbot_pydantic, mock_aioresponse, error, msg_id, txt, json_response):
     if "_" in txt:
         # wrong markdown causes second attempt to call POST
         mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText", status=400,
@@ -207,19 +224,39 @@ async def test_editMessageText(client_tgbot_pydantic, mock_aioresponse, error, m
     mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText", payload=json_response)
 
 
-    if error:
-        with pytest.raises(error):
-            response1 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt)
-        return
-    else:
+    with pytest.raises(error) as e:
         response1 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt)
+    assert type(e.value) == error
+    assert str(e.value) == json_response["description"]
 
-    if error:
-        with pytest.raises(error):
-            response2 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt, parse_mode="markdown")
-        return
-    else:
+    with pytest.raises(error):
         response2 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt, parse_mode="markdown")
+    assert type(e.value) == error
+    assert str(e.value) == json_response["description"]
+
+@pytest.mark.parametrize(
+    "msg_id, txt, json_response", [
+        [786, "new_text", {'ok': True, 'result': {'message_id': 786, 'from': {'id': 1357535845, 'is_bot': True, 'first_name': 'support-bot', 'username': 'AmoSupportBot'}, 'chat': {'id': 435627225, 'first_name': 'Дмитрий', 'last_name': 'Калекин', 'username': 'herr_horror', 'type': 'private'}, 'date': 1605747017, 'edit_date': 1605782835, 'text': 'new_text'}}],
+        [786, "new.text", {'ok': True, 'result': {'message_id': 786, 'from': {'id': 1357535845, 'is_bot': True, 'first_name': 'support-bot', 'username': 'AmoSupportBot'}, 'chat': {'id': 435627225, 'first_name': 'Дмитрий', 'last_name': 'Калекин', 'username': 'herr_horror', 'type': 'private'}, 'date': 1605747017, 'edit_date': 1605782836, 'text': 'new.text'}}],
+    ])
+@pytest.mark.asyncio
+async def test_editMessageText(client_tgbot_pydantic, mock_aioresponse, msg_id, txt, json_response):
+    if "_" in txt:
+        # wrong markdown causes second attempt to call POST
+        mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText", status=400,
+                              payload={'ok': False, 'error_code': 400, 'description': "Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 3"})
+    mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText",  payload=json_response)
+
+    if "_" in txt:
+        # wrong markdown causes second attempt to call POST
+        mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText", status=400,
+                              payload={'ok': False, 'error_code': 400, 'description': "Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 3"})
+    mock_aioresponse.post(f"https://api.telegram.org/bot{client_tgbot_pydantic.token}/editMessageText", payload=json_response)
+
+
+    response1 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt)
+
+    response2 = await client_tgbot_pydantic.editMessageText(435627225, msg_id, txt, parse_mode="markdown")
 
     assert type(response1) == Message
     assert response1 == Message.parse_obj(json_response["result"])

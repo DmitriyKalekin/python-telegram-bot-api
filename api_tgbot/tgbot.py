@@ -13,6 +13,12 @@ class TgBot:
         self.token = token
         self._tg = TgBotJson(token)
 
+    def _try_parse_result(self, response):
+        if "result" not in response.payload:
+            raise TgException(response.payload["description"])
+
+
+
     async def getUpdates(self, limit: int = 100, **kwargs) -> List[Update]:
         """
         Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
@@ -22,10 +28,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.getUpdates(limit, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return cast(List[Update], list([Update.parse_obj(obj) for obj in json["result"]]))
+        self._try_parse_result(response)
+        return cast(List[Update], list([Update.parse_obj(obj) for obj in response.payload["result"]]))
 
     async def sendMessage(self, chat_id: int, text: str, **kwargs) -> Message:
         """
@@ -37,10 +41,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.sendMessage(chat_id, text, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])
 
     async def editMessageText(self, chat_id, message_id, text, **kwargs) -> Message:
         """
@@ -54,10 +56,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.editMessageText(chat_id, message_id, text, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])
 
     async def deleteMessage(self, chat_id, message_id) -> bool:
         """
@@ -76,9 +76,7 @@ class TgBot:
         :return:
         """
         response = await self._tg.deleteMessage(chat_id, message_id)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
+        self._try_parse_result(response)
         return True
 
     async def sendPhoto(self, chat_id: int, caption: str = "", **kwargs) -> Message:
@@ -91,10 +89,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.sendPhoto(chat_id, caption, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])
 
     async def sendMediaGroup(self, chat_id: int, media: list, **kwargs) -> List[Message]:
         """
@@ -108,10 +104,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.sendMediaGroup(chat_id, media, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return [Message.parse_obj(obj) for obj in json["result"]]
+        self._try_parse_result(response)
+        return [Message.parse_obj(obj) for obj in response.payload["result"]]
 
     async def sendAnimation(self, chat_id: int, **kwargs) -> Message:
         """
@@ -124,10 +118,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.sendAnimation(chat_id, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])
 
     async def sendVideo(self, chat_id: int, **kwargs) -> Message:
         """
@@ -140,10 +132,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.sendVideo(chat_id, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])
 
     async def setWebhook(self, wh_url: str) -> bool:
         """
@@ -160,10 +150,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.setWebhook(wh_url)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return json["result"]
+        self._try_parse_result(response)
+        return response.payload["result"]
 
     async def getWebhookInfo(self) -> WebhookInfo:
         """
@@ -175,10 +163,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.getWebhookInfo()
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return WebhookInfo.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return WebhookInfo.parse_obj(response.payload["result"])
 
     async def deleteWebhook(self) -> bool:
         """
@@ -188,10 +174,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.deleteWebhook()
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return json["result"]
+        self._try_parse_result(response)
+        return response.payload["result"] == True
 
     async def getChatAdministrators(self, chat_id: int, **kwargs) -> List[ChatMember]:
         """
@@ -204,10 +188,8 @@ class TgBot:
         :return:
         """
         response = await self._tg.getChatAdministrators(chat_id, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return [ChatMember.parse_obj(obj) for obj in json["result"]]
+        self._try_parse_result(response)
+        return [ChatMember.parse_obj(obj) for obj in response.payload["result"]]
 
     async def editMessageMedia(self, chat_id: int, message_id: int, media: dict, **kwargs) -> Message:
         """
@@ -225,7 +207,5 @@ class TgBot:
         :return:
         """
         response = await self._tg.editMessageMedia(chat_id, message_id, media, **kwargs)
-        json = await response.json()
-        if "result" not in json:
-            raise TgException(json["description"])
-        return Message.parse_obj(json["result"])
+        self._try_parse_result(response)
+        return Message.parse_obj(response.payload["result"])

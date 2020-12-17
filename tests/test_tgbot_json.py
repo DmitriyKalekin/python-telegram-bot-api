@@ -9,7 +9,7 @@ async def test_getWebhookInfo_empty_wh(client_tgbot_json, mock_aioresponse):
     response = await client_tgbot_json.getWebhookInfo()
 
     assert response.status == 200
-    assert await response.json() == JSON_EMPTY_WH
+    assert response.payload == JSON_EMPTY_WH
 
 
 @pytest.mark.asyncio
@@ -26,11 +26,11 @@ async def test_deleteWebhook(client_tgbot_json, mock_aioresponse):
     response3 = await client_tgbot_json.deleteWebhook()
 
     assert response1.status == 200
-    assert await response1.json() == JSON_FIRST
+    assert response1.payload == JSON_FIRST
     assert response2.status == 200
-    assert await response2.json() == JSON_SECOND
+    assert response2.payload == JSON_SECOND
     assert response3.status == 200
-    assert await response3.json() == JSON_SECOND
+    assert response3.payload == JSON_SECOND
 
 
 @pytest.mark.parametrize(
@@ -57,7 +57,7 @@ async def test_setWebhook(client_tgbot_json, mock_aioresponse, wh_url, json_resp
     response = await client_tgbot_json.setWebhook(wh_url)
 
     assert response.status == 200
-    assert await response.json() == json_response
+    assert response.payload == json_response
 
 
 @pytest.mark.parametrize(
@@ -85,7 +85,7 @@ async def test_getWebhhokInfo(client_tgbot_json, mock_aioresponse, wh_url, json_
     response2 = await client_tgbot_json.getWebhookInfo()
 
     assert response2.status == 200
-    assert await response2.json() == json_wh_status
+    assert response2.payload == json_wh_status
 
 
 # @pytest.mark.asyncio
@@ -104,7 +104,7 @@ async def test_getWebhhokInfo(client_tgbot_json, mock_aioresponse, wh_url, json_
 #     response = await client_tgbot_json.recreate_webhook(wh_url)
 #
 #     assert response.status == 200
-#     assert await response.json() == JSON_INFO
+#     assert response.payload == JSON_INFO
 
 
 @pytest.mark.parametrize(
@@ -133,7 +133,7 @@ async def test_getUpdates(client_tgbot_json, mock_aioresponse, error_code, json_
     response = await client_tgbot_json.getUpdates()
 
     assert response.status == error_code
-    assert await response.json() == json_updates
+    assert response.payload == json_updates
 
 
 
@@ -162,9 +162,9 @@ async def test_sendMessage(client_tgbot_json, mock_aioresponse, error_code, txt,
     response2 = await client_tgbot_json.sendMessage(435627225, txt, parse_mode="markdown")
 
     assert response1.status == error_code
-    assert await response1.json() == json_response
+    assert response1.payload == json_response
     assert response2.status == error_code
-    assert await response2.json() == json_response
+    assert response2.payload == json_response
 
 
 
@@ -180,7 +180,7 @@ async def test_deleteMessage(client_tgbot_json, mock_aioresponse, error_code, ms
     response = await client_tgbot_json.deleteMessage(435627225, msg_id)
 
     assert response.status == error_code
-    assert await response.json() == json_response
+    assert response.payload == json_response
 
 @pytest.mark.parametrize(
     "error_code, msg_id, txt, json_response", [
@@ -208,6 +208,6 @@ async def test_editMessageText(client_tgbot_json, mock_aioresponse, error_code, 
     response2 = await client_tgbot_json.editMessageText(435627225, msg_id, txt, parse_mode="markdown")
 
     assert response1.status == error_code
-    assert await response1.json() == json_response
+    assert response1.payload == json_response
     assert response2.status == error_code
-    assert await response2.json() == json_response
+    assert response2.payload == json_response
