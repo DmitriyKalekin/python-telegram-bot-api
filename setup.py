@@ -15,7 +15,7 @@ def read_requirements(filename: str = "requirements.txt") -> list:
     requirements = []
     try:
         with open(filename) as req:
-            requirements = list([line for line in req.readlines() if line.strip() and line.strip() != "-r requirements.txt"])
+            requirements = [line for line in req.readlines() if line.strip() != "-r requirements.txt"]
     except Exception as e:
         print(e)
     return requirements
