@@ -4,7 +4,7 @@
 <img src="https://img.shields.io/badge/tests-pytest-orange?style=for-the-badge" alt="pytest"/>
 <img src="https://img.shields.io/badge/async-asyncio, aiohttp-green?style=for-the-badge" alt="asyncio, aiohttp"/>
 <a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/Telegram Chat-@herr_horror-2CA5E0.svg?logo=telegram&style=for-the-badge" alt="Chat on Telegram"/></a>
-<img src="https://img.shields.io/badge/version-v.0.0.6-green?style=for-the-badge" alt="Last Release"/>
+<img src="https://img.shields.io/badge/version-v.0.0.7-green?style=for-the-badge" alt="Last Release"/>
 </p>
 
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
 ```
 
-Simple JSON-Example:   
+Simple JSON-Example if you are not interested in pydantic models and want to use dict in answers:   
 ```python
 import asyncio
 from api_tgbot import TgBotJson
@@ -71,12 +71,12 @@ client_tgbot = TgBotJson(token=TGBOT_TOKEN)
 
 async def main_async():
     response = await client_tgbot.setWebhook("{hostname}/tgbot/wh".format(hostname=APP_HOSTNAME))
-    r = await response.json()
-    print(r)
+    print(response.status)  # 200
+    print(response.payload) # {'ok': True, 'result': True, 'description': 'Webhook was set'}
 
     response = await client_tgbot.sendMessage(CHAT_ID, "Hello from Telegram Bot!")
-    r = await response.json()
-    print(r)
+    print(response.status)  # 200
+    print(response.payload) # {'ok': True, 'result': {'message_id': 786, 'from': {'id': ... } ... }
 
 
 if __name__ == "__main__":
