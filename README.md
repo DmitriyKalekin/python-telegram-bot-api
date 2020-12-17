@@ -1,4 +1,4 @@
-# Telegram Bot API - Python SDK (using aiohttp)
+# Telegram Bot API - Async Python SDK (using aiohttp)
 
 <p align="center">
 <img src="https://img.shields.io/badge/tests-pytest-orange?style=for-the-badge" alt="pytest"/>
