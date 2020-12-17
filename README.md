@@ -4,7 +4,7 @@
 <img src="https://img.shields.io/badge/tests-pytest-orange?style=for-the-badge" alt="pytest"/>
 <img src="https://img.shields.io/badge/async-asyncio, aiohttp-green?style=for-the-badge" alt="asyncio, aiohttp"/>
 <a href="https://t.me/herr_horror"><img src="https://img.shields.io/badge/Telegram Chat-@herr_horror-2CA5E0.svg?logo=telegram&style=for-the-badge" alt="Chat on Telegram"/></a>
-<img src="https://img.shields.io/badge/version-v.0.0.5-green?style=for-the-badge" alt="Last Release"/>
+<img src="https://img.shields.io/badge/version-v.0.0.6-green?style=for-the-badge" alt="Last Release"/>
 </p>
 
 
